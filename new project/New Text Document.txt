@@ -1,0 +1,13 @@
+<% String email = request.getParameter("email");
+                String pass = request.getParameter("pass");
+                    
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/all time rides","root","sachin");
+Statement st = con.createStatement();
+ResultSet rs = st.executeQuery("SELECT * FROM sign_up WHERE email_id='"+email+"' AND password="+pass);
+while(rs.next())
+{
+    out.println("hello");
+}
+
+                    %>

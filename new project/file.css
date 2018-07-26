@@ -1,0 +1,14 @@
+
+*{ color:#fff; }
+body{
+	background-image:url("img/road.jpg");
+	background-size: cover;
+
+	}/*vh means vertical height that means height of the image will be set according to the vertical height of the screen*/
+
+.form-container{ border: 0px solid #fff; padding: 70px 60px; margin-top: 20%;
+-webkit-box-shadow: 8px 17px 45px 8px rgba(251,250,255,1);
+-moz-box-shadow: 8px 17px 45px 8px rgba(251,250,255,1);
+box-shadow: 8px 17px 45px 8px rgba(251,250,255,1);
+ }
+

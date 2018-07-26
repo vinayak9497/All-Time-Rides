@@ -1,0 +1,77 @@
+BLOB Cloumn Table "trn_imgs"
+Column img_data is BLOB type. Which hold the image into binary format.
+
+CREATE TABLE  `technicalkeeda`.`trn_imgs` (
+  `img_id` int(10) unsigned NOT NULL auto_increment,
+  `img_title` varchar(45) collate latin1_general_ci NOT NULL,
+  `img_data` blob NOT NULL,
+  PRIMARY KEY  (`img_id`)
+);
+Write Image Using Jdbc
+To Write image into database BLOB using Jdbc , You need to Convert the File into Inputstream. statement.setBinaryStream(2, (InputStream) inputStream,(int) (image.length())); PreparedStatement statement offer method setBinaryStream() which is used to write binary stream into database BLOB column.
+
+package com.technicalkeeda.app;
+ 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+ 
+public class InsertImageTest {
+ 
+    public static void main(String[] args) throws SQLException {
+        InsertImageTest imageTest = new InsertImageTest();
+        imageTest.insertImage();
+    }
+ 
+    public Connection getConnection() {
+        Connection connection = null;
+ 
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/technicalkeeda", "root", "");
+        } catch (Exception e) {
+            System.out.println("Error Occured While Getting the Connection: - " + e);
+        }
+        return connection;
+    }
+ 
+    public void insertImage() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        FileInputStream inputStream = null;
+ 
+        try {
+            File image = new File("C:/honda.jpg");
+            inputStream = new FileInputStream(image);
+ 
+            connection = getConnection();
+            statement = connection.prepareStatement("insert into trn_imgs(img_title, img_data) " + "values(?,?)");
+            statement.setString(1, "Honda Car");
+            statement.setBinaryStream(2, (InputStream) inputStream, (int)(image.length()));
+ 
+            statement.executeUpdate();
+ 
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException: - " + e);
+        } catch (SQLException e) {
+            System.out.println("SQLException: - " + e);
+        } finally {
+ 
+            try {
+                connection.close();
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException Finally: - " + e);
+            }
+ 
+        }
+ 
+    }
+ 
+ 
+}
